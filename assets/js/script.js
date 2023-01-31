@@ -131,6 +131,13 @@ $( document ).ready(function() {
             day5wind += (day5[i].wind.speed * 1) / day5.length;
             day5humidity += (day5[i].main.humidity * 1) / day5.length;
         }
+
+        avgTemp=[day1temp.toFixed(2),day2temp.toFixed(2),day3temp.toFixed(2),day4temp.toFixed(2),day5temp.toFixed(2)];
+
+        avgWind=[day1wind.toFixed(2),day2wind.toFixed(2),day3wind.toFixed(2),day4wind.toFixed(2),day5wind.toFixed(2)];
+
+        avgHumidity=[Math.round(day1humidity),Math.round(day2humidity),Math.round(day3humidity),Math.round(day4humidity),Math.round(day5humidity)];
+
     }
 
 });
