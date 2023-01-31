@@ -2,15 +2,16 @@ $( document ).ready(function() {
 
     const key = "2da6629ff1a77167ddf523563768f9b8";
 
-    let day = dayjs().format('DD MM YYYY');
-    
-    var todayForecast ;
+    let weatherArr;
+    let weatherList;
+
+    let day = moment().format("DD/MM/YYYY");
 
     $('#search-button').on('click', function(e) {
 
         let cityName = $('#search-input').val();
 
-        let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + key;
+        let queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + key;
         console.log(queryURL);
 
         e.preventDefault();
@@ -20,15 +21,18 @@ $( document ).ready(function() {
             method: "GET"
         }).then(function(response) {
 
-            todayForecast = response;
-            currentWeather(todayForecast);
-            console.log(todayForecast);
-
+            weatherArr = response;
+            weatherList = response.list;
+            currentWeather(weatherArr);
+            splitIntoFiveDays(weatherList);
+            
         });
 
     })
 
     function currentWeather() {
+
+        let todayForecast = weatherArr.list[0]
         var todayBox = $("#today");
         var todayCard = $("<div>");
         todayCard.attr("class", "card border-dark");
@@ -38,7 +42,7 @@ $( document ).ready(function() {
         todayCard.append(cardBody);
       
         var cardTitle = $('<h5 class="card-title">');
-        cardTitle.text(`${todayForecast.name} (${day})`);
+        cardTitle.text(`${weatherArr.city.name} (${day})`);
 
         var iconcode = todayForecast.weather[0].icon;
         var iconurl = "http://openweathermap.org/img/w/" + iconcode + ".png";
@@ -57,6 +61,40 @@ $( document ).ready(function() {
         var humidityText = $('<p class="card-text">');
         humidityText.text(`Humidity: ${todayForecast.main.humidity}%`);
         cardBody.append(humidityText);
+    }
+
+    function getDate(str) {
+        var dateStr = str.substring(0, str.indexOf(" "));
+        return dateStr.split("-").reverse().join("/");
+    }
+
+    var day1 = [];
+    var day2 = [];
+    var day3 = [];
+    var day4 = [];
+    var day5 = [];
+
+    const a = moment().add(1, 'd').format("DD/MM/YYYY");
+    const b = moment().add(2, 'd').format("DD/MM/YYYY");
+    const c = moment().add(3, 'd').format("DD/MM/YYYY");
+    const d = moment().add(4, 'd').format("DD/MM/YYYY");
+    const e = moment().add(5, 'd').format("DD/MM/YYYY");
+
+    function splitIntoFiveDays() {
+        for (var i = 0; i < weatherList.length; i++) {
+          
+          if (getDate(weatherList[i].dt_txt) == a) {
+            day1.push(weatherList[i]);
+          } else if (getDate(weatherList[i].dt_txt) == b) {
+            day2.push(weatherList[i]);
+          } else if (getDate(weatherList[i].dt_txt) == c) {
+            day3.push(weatherList[i]);
+          } else if (getDate(weatherList[i].dt_txt) == d) {
+            day4.push(weatherList[i]);
+          } else if (getDate(weatherList[i].dt_txt) == e) {
+            day5.push(weatherList[i]);
+          }
+        }
     }
 
 });
