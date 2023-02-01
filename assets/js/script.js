@@ -136,8 +136,10 @@ $(document).ready(function () {
       }
       day1wind += (day1[i].wind.speed * 1) / day1.length;
       day1humidity += (day1[i].main.humidity * 1) / day1.length;
-      let index = Math.round(day1.length / 2);
-      day1Icon = day1[index].weather[0].icon;
+      const time = day1[i].dt_txt.split(" ")[1];
+      if (time === "12:00:00") {
+        day1Icon = day1[i].weather[0].icon;
+      }
     }
 
     for (var i = 0; i < day2.length; i++) {
@@ -148,8 +150,10 @@ $(document).ready(function () {
       }
       day2wind += (day2[i].wind.speed * 1) / day2.length;
       day2humidity += (day2[i].main.humidity * 1) / day2.length;
-      let index = Math.round(day2.length / 2);
-      day2Icon = day2[index].weather[0].icon;
+      const time = day2[i].dt_txt.split(" ")[1];
+      if (time === "12:00:00") {
+        day2Icon = day2[i].weather[0].icon;
+      }
     }
 
     for (var i = 0; i < day3.length; i++) {
@@ -160,8 +164,10 @@ $(document).ready(function () {
       }
       day3wind += (day3[i].wind.speed * 1) / day3.length;
       day3humidity += (day3[i].main.humidity * 1) / day3.length;
-      let index = Math.round(day3.length / 2);
-      day3Icon = day3[index].weather[0].icon;
+      const time = day3[i].dt_txt.split(" ")[1];
+      if (time === "12:00:00") {
+        day3Icon = day3[i].weather[0].icon;
+      }
     }
 
     for (var i = 0; i < day4.length; i++) {
@@ -172,8 +178,10 @@ $(document).ready(function () {
       }
       day4wind += (day4[i].wind.speed * 1) / day4.length;
       day4humidity += (day4[i].main.humidity * 1) / day4.length;
-      let index = Math.round(day4.length / 2);
-      day4Icon = day4[index].weather[0].icon;
+      const time = day4[i].dt_txt.split(" ")[1];
+      if (time === "12:00:00") {
+        day4Icon = day4[i].weather[0].icon;
+      }
     }
 
     for (var i = 0; i < day5.length; i++) {
@@ -184,8 +192,12 @@ $(document).ready(function () {
       }
       day5wind += (day5[i].wind.speed * 1) / day5.length;
       day5humidity += (day5[i].main.humidity * 1) / day5.length;
-      let index = Math.round(day5.length / 2);
-      day5Icon = day5[index].weather[0].icon;
+      const time = day5[i].dt_txt.split(" ")[1];
+      if (time === "00:00:00") {
+        day5Icon = day5[i].weather[0].icon;
+      } else if (time === "12:00:00") {
+        day5Icon = day5[i].weather[0].icon;
+      }
     }
 
     minTemp = [day1mintemp, day2mintemp, day3mintemp, day4mintemp, day5mintemp];
