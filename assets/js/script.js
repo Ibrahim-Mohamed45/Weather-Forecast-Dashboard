@@ -51,6 +51,12 @@
         displayPreviousSearches();
     }
 
+    $(".btnName").on("click", function(){
+        var cityName = $(this).text();
+        generateWeatherData(cityName);
+    });
+
+
     function generateWeatherData(cityName) {
     let queryURL =
             "https://api.openweathermap.org/data/2.5/forecast?q=" +
