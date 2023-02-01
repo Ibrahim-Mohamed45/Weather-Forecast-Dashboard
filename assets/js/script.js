@@ -32,6 +32,8 @@ $( document ).ready(function() {
 
     function currentWeather() {
 
+        $("#today").empty();
+
         let todayForecast = weatherArr.list[0]
         var todayCard = $("<div>");
         todayCard.attr("class", "card border-dark");
@@ -80,6 +82,9 @@ $( document ).ready(function() {
     const e = moment().add(5, 'd').format("DD/MM/YYYY");
 
     function splitIntoFiveDays() {
+
+        $("#forecast").empty();
+
         for (var i = 0; i < weatherList.length; i++) {
           
           if (getDate(weatherList[i].dt_txt) == a) {
