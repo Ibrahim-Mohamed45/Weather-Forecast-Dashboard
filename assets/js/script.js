@@ -7,7 +7,14 @@ $(document).ready(function () {
   let day = moment().format("DD/MM/YYYY");
 
   $("#search-button").on("click", function (e) {
-    let cityName = $("#search-input").val();
+
+    let cityName = $('#search-input').val();
+
+    cityName = cityName.charAt(0).toUpperCase() + cityName.slice(1);
+
+    searchHistory.unshift(cityName);
+
+    generateButtons();
 
     let queryURL =
       "https://api.openweathermap.org/data/2.5/forecast?q=" +
@@ -30,6 +37,20 @@ $(document).ready(function () {
       console.log(weatherList);
     });
   });
+
+  let searchHistory = ["London"];
+
+  function generateButtons() {
+
+    $("#history").empty();
+
+    for (i = 0; i < searchHistory.length; i++) {
+        let history = $("<button class='btn mx-1 mt-3 btn-info' >");
+        history.attr("data-name", searchHistory[i]);
+        history.text(searchHistory[i]);
+        $("#history").append(history)
+    }
+};
 
   function currentWeather() {
     $("#today").empty();
@@ -100,31 +121,12 @@ $(document).ready(function () {
       }
     }
 
-    let day1maxtemp = 0;
-    let day1mintemp = 100;
-    let day1wind = 0;
-    let day1humidity = 0;
-    let day2maxtemp = 0;
-    let day2mintemp = 100;
-    let day2wind = 0;
-    let day2humidity = 0;
-    let day3maxtemp = 0;
-    let day3mintemp = 100;
-    let day3wind = 0;
-    let day3humidity = 0;
-    let day4maxtemp = 0;
-    let day4mintemp = 100;
-    let day4wind = 0;
-    let day4humidity = 0;
-    let day5maxtemp = 0;
-    let day5mintemp = 100;
-    let day5wind = 0;
-    let day5humidity = 0;
-    let day1Icon;
-    let day2Icon;
-    let day3Icon;
-    let day4Icon;
-    let day5Icon;
+    let day1maxtemp = 0; let day1mintemp = 100; let day1wind = 0; let day1humidity = 0;
+    let day2maxtemp = 0; let day2mintemp = 100; let day2wind = 0; let day2humidity = 0;
+    let day3maxtemp = 0; let day3mintemp = 100; let day3wind = 0; let day3humidity = 0;
+    let day4maxtemp = 0; let day4mintemp = 100; let day4wind = 0; let day4humidity = 0;
+    let day5maxtemp = 0; let day5mintemp = 100; let day5wind = 0; let day5humidity = 0;
+    let day1Icon; let day2Icon; let day3Icon; let day4Icon; let day5Icon;
 
     for (var i = 0; i < day1.length; i++) {
       if (day1[i].main.temp.toFixed(2) * 1 > day1maxtemp) {
