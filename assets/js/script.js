@@ -18,22 +18,6 @@ const key = "2da6629ff1a77167ddf523563768f9b8";
         generateWeatherData(cityName);
 
     });
-    
-    function displayPreviousSearches(){
-        for (var i = 0; i < searchHistory.length; i++){ 
-            var histoyBtn = $("<button type='submit' class='btn mx-1 mt-3 btn-info'>").text(searchHistory[i]);
-            $("#history").prepend(histoyBtn);
-        }
-    }
-    
-    if (searchHistory !== undefined || searchHistory.length !== 0){ 
-        displayPreviousSearches();
-    }
-
-    $("#history").on("click", "button" , function(e) {
-        e.preventDefault;
-        generateWeatherData($(e.target).text());
-    });
 
     function generateWeatherData(cityName) {
     let queryURL =
@@ -269,3 +253,24 @@ const key = "2da6629ff1a77167ddf523563768f9b8";
         }
     }
 }
+
+function displayPreviousSearches(){
+    for (var i = 0; i < searchHistory.length; i++){ 
+        var histoyBtn = $("<button type='submit' class='btn mx-1 mt-3 btn-info'>").text(searchHistory[i]);
+        $("#history").prepend(histoyBtn);
+    }
+}
+
+if (searchHistory !== undefined || searchHistory.length !== 0){ 
+    displayPreviousSearches();
+}
+
+$("#history").on("click", "button" , function(e) {
+    e.preventDefault;
+    generateWeatherData($(e.target).text());
+});
+
+$('#clearBtn').on('click', function () {
+    localStorage.clear();
+    location.reload();
+})
