@@ -1,9 +1,9 @@
-    const key = "2da6629ff1a77167ddf523563768f9b8";
+const key = "2da6629ff1a77167ddf523563768f9b8";
 
     let weatherArr;
     let weatherList;
     let cityName;
-    var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+    var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || []; 
 
     let day = moment().format("DD/MM/YYYY");
 
@@ -15,47 +15,25 @@
         cityName = cityName.toLowerCase();
         cityName = cityName.charAt(0).toUpperCase() + cityName.slice(1);
 
-        searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || []; 
-        var overwrite = searchHistory.includes(cityName);
-    
-        if (overwrite === false){
-            var histoyBtn = $("<button class='btn mx-1 mt-3 btn-info'>").text(cityName);
-            histoyBtn.addClass("btnName");
-            histoyBtn.attr("data-id", cityName);
-            $("#history").prepend(histoyBtn);
-    
-            searchHistory.push(cityName);
-            localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
-        }
-        else{
-            console.log("Search already exists");
-        }
-
         generateWeatherData(cityName);
 
     });
     
-    displayPreviousSearches = function(){
+    function displayPreviousSearches(){
         for (var i = 0; i < searchHistory.length; i++){ 
-            
-            var histoyBtn = $("<button class='btn mx-1 mt-3 btn-info'>").text(searchHistory[i]);
-            histoyBtn.addClass("btnName");
+            var histoyBtn = $("<button type='submit' class='btn mx-1 mt-3 btn-info'>").text(searchHistory[i]);
             $("#history").prepend(histoyBtn);
         }
     }
     
-    if (searchHistory === undefined || searchHistory.length == 0){ 
-        console.log("No previous searches found.");
-    }
-    else{
+    if (searchHistory !== undefined || searchHistory.length !== 0){ 
         displayPreviousSearches();
     }
 
-    $(".btnName").on("click", function(){
-        var cityName = $(this).text();
-        generateWeatherData(cityName);
+    $("#history").on("click", "button" , function(e) {
+        e.preventDefault;
+        generateWeatherData($(e.target).text());
     });
-
 
     function generateWeatherData(cityName) {
     let queryURL =
@@ -64,17 +42,33 @@
             "&appid=" +
             key +
             "&units=metric";
-        console.log(queryURL);
 
         $.ajax({
             url: queryURL,
             method: "GET",
-        }).then(function (response) {
-            weatherArr = response;
-            weatherList = response.list;
-            currentWeather(weatherArr);
-            splitIntoFiveDays(weatherList);
-            console.log(weatherList);
+            success: function (response) {
+                weatherArr = response;
+                weatherList = response.list;
+                currentWeather(weatherArr);
+                splitIntoFiveDays(weatherList);
+                $('#search-input').val('')
+
+                searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || []; 
+                var overwrite = searchHistory.includes(cityName);
+            
+                if (overwrite === false){
+                    var histoyBtn = $("<button type='submit' class='btn mx-1 mt-3 btn-info'>").text(cityName);
+                    histoyBtn.attr("data-id", cityName);
+                    $("#history").prepend(histoyBtn);
+            
+                    searchHistory.push(cityName);
+                    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+                }
+            },
+            error: function () {
+                alert('City not found, please enter another city')
+                $('#search-input').val('')
+            }
         }); 
     
         function currentWeather() {
@@ -247,8 +241,6 @@
         dates = [a, b, c, d, e];
 
         icons = [day1Icon, day2Icon, day3Icon, day4Icon, day5Icon];
-
-        console.log(icons);
 
         let forecastHeader = $(` <h3 class="px-3 w-100"> 5 Day Forecast: </h3> `);
         $("#forecast").append(forecastHeader);
